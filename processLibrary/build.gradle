@@ -1,0 +1,12 @@
+apply plugin: 'com.android.library'
+
+android {
+  compileSdkVersion 26
+  buildToolsVersion "26.0.3"
+  defaultConfig {
+    minSdkVersion 4
+    targetSdkVersion 22
+  }
+}
+
+apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

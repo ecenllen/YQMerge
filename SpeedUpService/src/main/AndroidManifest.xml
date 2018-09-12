@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.android.cloud.speedup">
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!--<uses-permission_boot1 android:name="android.permission_boot1.ACCESS_COARSE_LOCATION" />
+    <uses-permission_boot1 android:name="android.permission_boot1.ACCESS_FINE_LOCATION" />-->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
+    <!--以下是进程管理，程序锁必备权限，5.0L之后 -->
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission
+        android:name="android.permission.READ_NETWORK_USAGE_HISTORY"
+        tools:ignore="ProtectedPermissions" />
+
+    <application
+        android:name=".SpeedUpApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher2"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round2"
+        android:supportsRtl="true"
+        tools:replace="android:icon, android:roundIcon, android:theme"
+        android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="BaiduMobAd_APP_ID"
+            android:value="e866cfb0" />
+
+        <!-- for baidu xadsdk internal web-browser -->
+        <!-- 非信息广告必须添加 -->
+        <activity
+            android:name="com.baidu.mobads.AppActivity"
+            android:configChanges="screenSize|keyboard|keyboardHidden|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <activity
+            android:name=".activity.MainActivity"
+            android:excludeFromRecents="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <data
+                    android:host="com.android"
+                    android:path="/yq"
+                    android:scheme="android" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+
+            <!--<intent-filter>-->
+            <!--<data android:scheme="com.android.cloud.speedup" android:host="MainActivity"/>-->
+            <!--</intent-filter>-->
+        </activity>
+        <!-- targetSDKVersion >= 24时才需要添加这个provider。provider的authorities属性的值为${applicationId}.fileprovider，请开发者根据自己的${applicationId}来设置这个值，例如本例中applicationId为"com.qq.e.union.demo"。 -->
+        <!--<provider-->
+        <!--android:name="android.support.v4.content.FileProvider"-->
+        <!--android:authorities="${applicationId}.fileprovider"-->
+        <!--android:exported="false"-->
+        <!--android:grantUriPermissions="true">-->
+        <!--<meta-data-->
+        <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
+        <!--android:resource="@xml/gdt_file_path" />-->
+        <!--</provider>-->
+
+        <activity android:name="com.android.cloud.speedup.activity.ReadPermissionActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+
+        <service
+            android:name=".SpeedUpService"
+            android:enabled="true"
+            android:exported="true"
+            android:label="@string/speed_up_service"
+            android:priority="1000">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <action android:name="com.android.cloud.speedup.SpeedUpService" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.MyJobService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:priority="1000" />
+
+
+        <receiver
+            android:name=".receiver.SpeedUpReceiver"
+            android:directBootAware="true"
+            android:enabled="true"
+            android:exported="true"
+            android:priority="1000"
+            tools:targetApi="n">
+            <intent-filter>
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <!-- For pre-N devices -->
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".receiver.ConnectivityChangeReceiver"
+            android:directBootAware="true"
+            android:enabled="true"
+            android:exported="true"
+            android:priority="1000"
+            tools:targetApi="n">
+            <intent-filter>
+                <action android:name="android.intent.action.BATTERY_LOW"/>
+            </intent-filter>
+        </receiver>
+
+
+        <!-- 声明SDK所需要的组件 -->
+        <service
+            android:name="com.qq.e.comm.DownloadService"
+            android:exported="false" />
+        <!-- 请开发者注意字母的大小写，ADActivity，而不是AdActivity -->
+        <activity
+            android:name="com.qq.e.ads.ADActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
+
+        <activity
+            android:name=".activity.SpeedUpActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5ae9bc388f4a9d5fdc000175" />
+        <meta-data
+            android:name="UMENG_MESSAGE_SECRET"
+            android:value="@string/UMENG_MESSAGE_SECRET" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="baidu" />
+
+    </application>
+
+</manifest>

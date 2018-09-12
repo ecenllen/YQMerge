@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/lyt_toast"
+    android:background="#2b2937"
+    android:layout_centerHorizontal="true"
+
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:textSize="23sp"
+        android:id="@+id/tv_title"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:text="使用帮助" />
+    <TextView
+        android:id="@+id/tv_msg"
+        android:layout_width="match_parent"
+        android:textColor="@android:color/white"
+        android:layout_gravity="left"
+        android:layout_height="wrap_content"
+        android:text="1.dfjdo" />
+</LinearLayout>
